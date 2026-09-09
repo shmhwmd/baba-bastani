@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>بابا بستنی | نوشیدنی سرد</title>
+    <link rel="icon" href="imgs/78.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ============================================================
+           بابا بستنی — تم سبز و زرد + قابلیت دارک/لایت
+           ============================================================ */
+
+        /* ----- متغیرهای لایت (پیش‌فرض) ----- */
+        :root {
+            --color-bg: #F5F9F0;
+            --color-surface: #FFFFFF;
+            --color-surface-soft: #E8F5E0;
+            --color-primary: #2E7D32;
+            --color-primary-light: #4CAF50;
+            --color-primary-dark: #1B5E20;
+            --color-secondary: #F9A825;
+            --color-secondary-light: #FFD54F;
+            --color-secondary-dark: #F57F17;
+            --color-ink: #1E2B1E;
+            --color-ink-soft: #4A5A4A;
+            --color-accent: #FF6F00;
+            --color-border: #DCE8D4;
+            --shadow-soft: 0 8px 24px rgba(46, 125, 50, 0.10);
+            --shadow-hover: 0 16px 40px rgba(46, 125, 50, 0.18);
+            --radius-card: 24px;
+            --radius-sm: 12px;
+            --font-display: 'Lalezar', 'Vazirmatn', sans-serif;
+            --font-body: 'Vazirmatn', system-ui, sans-serif;
+            --transition: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            --hero-bg-start: #C8E6C9;
+            --hero-bg-end: #FFF9C4;
+            --nav-bg: rgba(255, 255, 255, 0.92);
+            --footer-bg: #FFFFFF;
+        }
+
+        /* ----- متغیرهای دارک ----- */
+        body.dark-mode {
+            --color-bg: #1A2A1A;
+            --color-surface: #243424;
+            --color-surface-soft: #2D3F2D;
+            --color-primary: #66BB6A;
+            --color-primary-light: #81C784;
+            --color-primary-dark: #4CAF50;
+            --color-secondary: #FFD54F;
+            --color-secondary-light: #FFE082;
+            --color-secondary-dark: #FFCA28;
+            --color-ink: #E8F0E0;
+            --color-ink-soft: #A0B8A0;
+            --color-accent: #FFAB00;
+            --color-border: #3D553D;
+            --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.30);
+            --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.40);
+            --hero-bg-start: #1A3A1A;
+            --hero-bg-end: #3A3A1A;
+            --nav-bg: rgba(26, 42, 26, 0.92);
+            --footer-bg: #1A2A1A;
+        }
+
+        /* ----- ریست و پایه ----- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+
+        body {
+            direction: rtl;
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--color-ink);
+            background: var(--color-bg);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-inline: auto;
+            padding-inline: 28px;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--color-secondary);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        .skip-link {
+            position: absolute;
+            right: 20px;
+            top: -80px;
+            background: var(--color-primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            transition: top 0.25s ease;
+            z-index: 200;
+            font-weight: 600;
+        }
+        .skip-link:focus {
+            top: 20px;
+        }
+
+        /* ---------- دکمه‌ی سوییچ تم (پایین سمت چپ) ---------- */
+        .theme-toggle {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 999;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-surface);
+            box-shadow: var(--shadow-hover);
+            border: 2px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all var(--transition);
+            color: var(--color-ink);
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(20deg);
+            border-color: var(--color-secondary);
+        }
+        .theme-toggle .icon-sun {
+            display: inline;
+        }
+        .theme-toggle .icon-moon {
+            display: none;
+        }
+        body.dark-mode .theme-toggle .icon-sun {
+            display: none;
+        }
+        body.dark-mode .theme-toggle .icon-moon {
+            display: inline;
+        }
+
+        /* ---------- HEADER ---------- */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--color-border);
+            transition: background var(--transition), border-color var(--transition);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding-block: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+            transition: color var(--transition);
+        }
+        .logo:hover {
+            color: var(--color-secondary);
+        }
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            transition: transform var(--transition);
+        }
+        .logo:hover .logo-icon {
+            transform: scale(1.08) rotate(-5deg);
+        }
+        .logo span {
+            color: var(--color-secondary);
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .main-nav a {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--color-ink-soft);
+            padding-block: 6px;
+            position: relative;
+            transition: color var(--transition);
+        }
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: -2px;
+            height: 2.5px;
+            width: 0;
+            background: var(--color-secondary);
+            border-radius: 4px;
+            transition: width var(--transition);
+        }
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: var(--color-primary);
+        }
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 44px;
+            height: 44px;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            background: var(--color-surface-soft);
+            transition: background var(--transition);
+        }
+        .nav-toggle:hover {
+            background: var(--color-border);
+        }
+        .nav-toggle span {
+            display: block;
+            height: 2.5px;
+            width: 100%;
+            background: var(--color-ink);
+            border-radius: 4px;
+            transition: transform var(--transition), opacity var(--transition);
+        }
+        .nav-toggle.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .nav-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .nav-toggle.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* ---------- BUTTONS ---------- */
+        .btn-primary {
+            display: inline-block;
+            background: var(--color-primary);
+            color: #fff;
+            font-weight: 700;
+            padding: 16px 40px;
+            border-radius: 60px;
+            transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+            box-shadow: 0 4px 16px rgba(46, 125, 50, 0.30);
+        }
+        .btn-primary:hover {
+            background: var(--color-primary-light);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(46, 125, 50, 0.40);
+        }
+
+        /* ---------- HERO ---------- */
+        .hero {
+            position: relative;
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--hero-bg-start), var(--hero-bg-end));
+            overflow: hidden;
+            isolation: isolate;
+            transition: background var(--transition);
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(249, 168, 37, 0.20), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.15), transparent 45%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .hero-bg-img {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.12;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Ccircle cx="30" cy="30" r="20" fill="%23F9A825"/%3E%3Ccircle cx="170" cy="50" r="28" fill="%234CAF50"/%3E%3Ccircle cx="100" cy="150" r="35" fill="%23FFD54F"/%3E%3C/svg%3E');
+            background-size: 300px;
+            background-repeat: repeat;
+        }
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            padding-block: 50px 30px;
+            width: 100%;
+        }
+        .hero-text {
+            flex: 1 1 480px;
+            color: var(--color-ink);
+        }
+        .hero-text>* {
+            animation: fadeUp 0.7s ease both;
+        }
+        .hero-text>*:nth-child(2) {
+            animation-delay: 0.08s;
+        }
+        .hero-text>*:nth-child(3) {
+            animation-delay: 0.16s;
+        }
+
+        .hero-kicker {
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+        }
+        .hero-kicker::before {
+            content: '🧊 ';
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 4.6rem);
+            line-height: 1.15;
+            margin-bottom: 20px;
+            color: var(--color-ink);
+        }
+        .hero-title em {
+            color: var(--color-secondary-dark);
+            font-style: normal;
+        }
+
+        .hero-desc {
+            color: var(--color-ink-soft);
+            max-width: 44ch;
+            margin-bottom: 0;
+            font-size: 1.08rem;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---------- SECTIONS ---------- */
+        .section {
+            padding-block: 72px;
+            transition: background var(--transition);
+        }
+        .section-light {
+            background: var(--color-surface);
+        }
+
+        .section-head {
+            text-align: center;
+            max-width: 660px;
+            margin: 0 auto 48px;
+        }
+        .section-head .badge {
+            display: inline-block;
+            background: rgba(249, 168, 37, 0.20);
+            color: var(--color-primary-dark);
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 4px 20px;
+            border-radius: 40px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            transition: background var(--transition), color var(--transition);
+        }
+        body.dark-mode .section-head .badge {
+            background: rgba(255, 213, 79, 0.20);
+            color: var(--color-secondary-light);
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+            color: var(--color-ink);
+            line-height: 1.25;
+        }
+        .section-title span {
+            color: var(--color-primary);
+        }
+        .section-desc {
+            color: var(--color-ink-soft);
+            margin-top: 10px;
+            font-size: 1.02rem;
+        }
+
+        /* ---------- گرید نوشیدنی‌های سرد (دو ستونه) ---------- */
+        .cold-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+        }
+
+        .cold-item {
+            background: var(--color-surface);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--color-border);
+            transition: transform var(--transition), box-shadow var(--transition),
+                background var(--transition), border-color var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        .cold-item:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .cold-item-img {
+            height: 160px;
+            background: var(--color-surface-soft);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--color-ink-soft);
+            transition: background var(--transition);
+        }
+        .cold-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .cold-item:hover .cold-item-img img {
+            transform: scale(1.05);
+        }
+
+        .cold-item-body {
+            padding: 16px 18px 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .cold-item-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--color-primary);
+            margin-bottom: 2px;
+            transition: color var(--transition);
+        }
+        .cold-item-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding-top: 8px;
+            margin-top: auto;
+            border-top: 1px solid var(--color-border);
+            transition: border-color var(--transition);
+        }
+        .cold-item-price {
+            font-weight: 800;
+            color: var(--color-accent);
+            font-size: 1rem;
+        }
+
+        /* ---------- FOOTER ---------- */
+        .site-footer {
+            background: var(--footer-bg);
+            border-top: 1px solid var(--color-border);
+            padding-block: 48px 24px;
+            transition: background var(--transition), border-color var(--transition);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr 1fr;
+            gap: 44px;
+        }
+        .footer-brand h2 {
+            font-family: var(--font-display);
+            color: var(--color-primary);
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+            transition: color var(--transition);
+        }
+        .footer-brand h2 span {
+            color: var(--color-secondary);
+        }
+        .footer-brand p {
+            max-width: 34ch;
+            font-size: 0.94rem;
+            color: var(--color-ink-soft);
+        }
+
+        .footer-col h4 {
+            color: var(--color-ink);
+            font-weight: 700;
+            margin-bottom: 16px;
+            font-size: 1rem;
+            transition: color var(--transition);
+        }
+        .footer-col ul li {
+            margin-bottom: 10px;
+            font-size: 0.94rem;
+        }
+        .footer-col ul a {
+            color: var(--color-ink-soft);
+            transition: color var(--transition);
+        }
+        .footer-col ul a:hover {
+            color: var(--color-primary);
+        }
+        .footer-col p {
+            font-size: 0.94rem;
+            margin-bottom: 8px;
+            color: var(--color-ink-soft);
+            line-height: 1.7;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-surface-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background var(--transition), transform var(--transition);
+            border: 1px solid var(--color-border);
+        }
+        .social-icons a:hover {
+            background: var(--color-primary);
+            transform: translateY(-3px);
+            border-color: var(--color-primary);
+        }
+        .social-icons a:hover svg {
+            fill: #fff;
+        }
+        .social-icons svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--color-ink-soft);
+            transition: fill var(--transition);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--color-border);
+            margin-top: 36px;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--color-ink-soft);
+            transition: border-color var(--transition);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 820px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+            .cold-grid {
+                gap: 18px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .nav-toggle {
+                display: flex;
+            }
+            .main-nav {
+                position: fixed;
+                inset-inline: 0;
+                top: 68px;
+                background: var(--nav-bg);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+                padding: 12px 28px 24px;
+                transform: translateY(-10px);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+                border-bottom: 1px solid var(--color-border);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+            }
+            .main-nav.open {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            .main-nav a {
+                width: 100%;
+                padding-block: 12px;
+                border-bottom: 1px solid var(--color-border);
+            }
+            .main-nav a:last-child {
+                border-bottom: none;
+            }
+
+            .hero-inner {
+                flex-direction: column;
+                padding-block: 40px 28px;
+                gap: 20px;
+            }
+            .hero-text {
+                flex: 1 1 auto;
+                width: 100%;
+            }
+            .hero-title {
+                font-size: clamp(2.2rem, 8vw, 3rem);
+            }
+            .hero {
+                min-height: 40vh;
+            }
+
+            .section {
+                padding-block: 48px;
+            }
+
+            .cold-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+            .cold-item-img {
+                height: 120px;
+                font-size: 2.4rem;
+            }
+            .cold-item-body {
+                padding: 12px 14px 14px;
+            }
+            .cold-item-name {
+                font-size: 0.95rem;
+            }
+            .cold-item-price {
+                font-size: 0.9rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+            .footer-brand {
+                grid-column: 1;
+            }
+
+            .theme-toggle {
+                bottom: 16px;
+                left: 16px;
+                width: 44px;
+                height: 44px;
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 440px) {
+            .container {
+                padding-inline: 16px;
+            }
+            .cold-grid {
+                gap: 12px;
+            }
+            .cold-item-img {
+                height: 100px;
+                font-size: 2rem;
+            }
+            .cold-item-body {
+                padding: 10px 12px 12px;
+            }
+            .cold-item-name {
+                font-size: 0.85rem;
+            }
+            .cold-item-price {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* ---------- افکت spotlight ---------- */
+        .cold-item,
+        .section-head {
+            transition: transform 0.25s ease-out, opacity 0.3s ease-out;
+            will-change: transform, opacity;
+        }
+    </style>
+</head>
+<body>
+
+    <a class="skip-link" href="#main">رفتن به محتوای اصلی</a>
+
+    <!-- ===== دکمه‌ی سوییچ تم ===== -->
+    <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon">🌙</span>
+    </button>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <img src="imgs/78.png" alt="لوگوی بابا بستنی" class="logo-icon" />
+                بابا <span>بستنی</span>
+            </a>
+            <nav class="main-nav" id="main-nav">
+                <a href="index.html">خانه</a>
+                <a href="hot-drinks.html">نوشیدنی گرم</a>
+                <a href="ice-cream.html">بستنی</a>
+                <a href="shakes.html">انواع شیک</a>
+                <a href="juices.html">آبمیوه</a>
+                <a href="ice-pack.html">آیس پک</a>
+                <a href="cold-drinks.html" class="active">نوشیدنی سرد</a>
+                <a href="ice-coffee.html">آیس کافی</a>
+            </nav>
+            <button class="nav-toggle" id="nav-toggle" aria-label="باز و بسته کردن منو" aria-expanded="false" aria-controls="main-nav">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main id="main">
+
+        <!-- ===== بخش قهرمان ===== -->
+        <section class="hero">
+            <div class="hero-bg-img"></div>
+            <div class="container hero-inner">
+                <div class="hero-text">
+                    <p class="hero-kicker">نوشیدنی‌های سرد</p>
+                    <h1 class="hero-title">طعم‌های خنک<br /><em>برای روزهای گرم</em></h1>
+                    <p class="hero-desc">از شیر موز و معجون مخصوص تا لیموناد و شربت‌های سنتی؛ هر کدام یک تجربه‌ی تازه.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== بخش لیست نوشیدنی‌های سرد ===== -->
+        <div class="section section-light">
+            <div class="container">
+                <div class="section-head">
+                    <span class="badge">منوی نوشیدنی سرد</span>
+                    <h2 class="section-title">انتخاب <span>شما</span></h2>
+                    <p class="section-desc">هر نوشیدنی با طعمی تازه و خنک</p>
+                </div>
+
+                <div class="cold-grid">
+                    <!-- 1. شیر موز -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-shirmoz.jpg" alt="شیر موز" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شیر موز</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۵۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 2. شیر توت فرنگی -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-shirtootf.jpg" alt="شیر توت فرنگی" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شیر توت فرنگی</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۱۵۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 3. شیر طالبی -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/shirtalebi.jpg" alt="شیر طالبی" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شیر طالبی</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۵۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 5. معجون مخصوص بزرگ -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-majoonspecial.jpg" alt="معجون مخصوص بزرگ" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">معجون مخصوص بزرگ</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۱,۲۰۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 6. معجون مخصوص متوسط -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-majoonspecial.jpg" alt="معجون مخصوص متوسط" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">معجون مخصوص متوسط</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۹۰۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 7. معجون مخصوص کوچک -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-majoonspecial.jpg" alt="معجون مخصوص کوچک" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">معجون مخصوص کوچک</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۶۰۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 8. شیر نارگیل ویژه -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-shirnarg.jpg" alt="شیر نارگیل ویژه" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شیر نارگیل ویژه</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۵۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 9. شیر پسته -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-pistmilk.jpg" alt="شیر پسته" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شیر پسته</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۶۰۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 10. شیر موز-پسته مخصوص -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-pistbannana.jpg" alt="شیر موز-پسته مخصوص" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شیر موز-پسته مخصوص</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۷۰۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 11. شیر موز انبه -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-mangobannana.jpg" alt="شیر موز انبه" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شیر موز انبه</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۵۵۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 12. شیر موز بستنی -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-shirmozbast.jpg" alt="شیر موز بستنی" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شیر موز بستنی</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۸۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 13. آب هویج بستنی -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-havijbast.jpg" alt="آب هویج بستنی" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">آب هویج بستنی</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۳۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 14. موهیتو -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-mohito.jpg" alt="موهیتو" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">موهیتو</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۰۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 15. آب معدنی کوچک -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-ab.jpg" alt="آب معدنی کوچک" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">آب معدنی کوچک</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 16. یخ در بهشت -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-yakh.jpg" alt="یخ در بهشت" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">یخ در بهشت</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۰۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 17. لیموناد -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-lemonade.jpg" alt="لیموناد" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">لیموناد</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۰۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 18. آب طالبی بستنی -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-talebibast.jpg" alt="آب طالبی بستنی" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">آب طالبی بستنی</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۲۳۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 19. شربت زعفران -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-saffron.jpg" alt="شربت زعفران" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شربت زعفران</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۱۵۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 20. شربت خاکشیر -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-khakshir.jpg" alt="شربت خاکشیر" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">شربت خاکشیر</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۱۵۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 21. آب کتابی -->
+                    <article class="cold-item">
+                        <div class="cold-item-img">
+                            <img src="imgs/cd-abketabi,jpg.png" alt="آب کتابی" loading="lazy" />
+                        </div>
+                        <div class="cold-item-body">
+                            <h3 class="cold-item-name">آب کتابی</h3>
+                            <div class="cold-item-footer">
+                                <span class="cold-item-price">۴۰,۰۰۰ تومان</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h2>بابا <span>بستنی</span></h2>
+                <p>خنک‌ترین طعم‌ها در بابا بستنی. با مواد اولیه‌ی تازه و مرغوب.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="اینستاگرام بابا بستنی">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2.1.26 2.6.44.6.24 1.1.55 1.6 1.04.5.5.8 1 1.04 1.6.18.5.38 1.4.44 2.6.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.26 2.1-.44 2.6-.24.6-.55 1.1-1.04 1.6-.5.5-1 .8-1.6 1.04-.5.18-1.4.38-2.6.44-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2.1-.26-2.6-.44-.6-.24-1.1-.55-1.6-1.04-.5-.5-.8-1-1.04-1.6-.18-.5-.38-1.4-.44-2.6C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.26-2.1.44-2.6.24-.6.55-1.1 1.04-1.6.5-.5 1-.8 1.6-1.04.5-.18 1.4-.38 2.6-.44C8.4 2.2 8.8 2.2 12 2.2zm0 3.05a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zm0 11.13a4.38 4.38 0 110-8.76 4.38 4.38 0 010 8.76zm7.02-11.4a1.58 1.58 0 11-3.15 0 1.58 1.58 0 013.15 0z"/></svg>
+                    </a>
+                    <a href="#" aria-label="تلگرام بابا بستنی">
+                        <svg viewBox="0 0 24 24"><path d="M21.9 4.6c.2-1-.6-1.7-1.5-1.3L2.6 10.5c-.9.4-.9 1.6.1 1.9l4.4 1.4 1.7 5.3c.2.6 1 .7 1.4.2l2.3-2.6 4.4 3.3c.7.5 1.7.1 1.9-.7l3.1-14.7zM8.7 13.2l9.4-6c.3-.2.6.2.3.4l-7.7 7.3c-.3.3-.5.7-.5 1.1l-.2 2.5-1.3-5.3z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>دسترسی سریع</h4>
+                <ul>
+                    <li><a href="index.html">خانه</a></li>
+                    <li><a href="hot-drinks.html">نوشیدنی گرم</a></li>
+                    <li><a href="ice-cream.html">بستنی</a></li>
+                    <li><a href="shakes.html">انواع شیک</a></li>
+                    <li><a href="juices.html">آبمیوه</a></li>
+                    <li><a href="ice-pack.html">آیس پک</a></li>
+                    <li><a href="cold-drinks.html">نوشیدنی سرد</a></li>
+                    <li><a href="ice-coffee.html">آیس کافی</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>اطلاعات تماس</h4>
+                <p>
+                    <a href="https://maps.app.goo.gl/mXUrJZFnqsaVYSTH6?g_st=ac" target="_blank">
+                        آدرس: نکا خیابان انقلاب، بعد از کوچه انقلاب 46
+                    </a>
+                </p>
+                <p>ساعت کاری: هر روز 8 صبح تا 2 شب</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© تمامی حقوق برای بابا بستنی محفوظ است.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // مدیریت منوی موبایل
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            var toggle = document.getElementById('nav-toggle');
+            var nav = document.getElementById('main-nav');
+
+            if (toggle && nav) {
+                toggle.addEventListener('click', function() {
+                    var isOpen = nav.classList.toggle('open');
+                    toggle.classList.toggle('open', isOpen);
+                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+
+                nav.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        nav.classList.remove('open');
+                        toggle.classList.remove('open');
+                        toggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
+            }
+        });
+
+        // ==========================================
+        // سوییچ تم (لایت/دارک)
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+
+            const savedTheme = localStorage.getItem('baba-theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+            }
+
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                const isDark = body.classList.contains('dark-mode');
+                localStorage.setItem('baba-theme', isDark ? 'dark' : 'light');
+            });
+        });
+
+        // ==========================================
+        // افکت Spotlight
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            var scrollItems = document.querySelectorAll('.cold-item, .section-head');
+
+            function updateScrollEffect() {
+                var viewportHeight = window.innerHeight;
+                var viewportCenter = viewportHeight / 2;
+                var range = 0.85;
+
+                scrollItems.forEach(function(item) {
+                    var rect = item.getBoundingClientRect();
+                    var itemCenter = rect.top + rect.height / 2;
+                    var distance = Math.abs(itemCenter - viewportCenter) / viewportCenter;
+                    var normalizedDistance = Math.min(distance / range, 1);
+                    var scale = 1 - (normalizedDistance * 0.08);
+                    var opacity = 1 - (normalizedDistance * 0.22);
+
+                    item.style.transform = 'scale(' + scale + ')';
+                    item.style.opacity = opacity;
+                });
+            }
+
+            updateScrollEffect();
+
+            var ticking = false;
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        updateScrollEffect();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            window.addEventListener('resize', updateScrollEffect);
+        });
+
+        // ==========================================
+        // هایلایت لینک فعال در ناوبری
+        // ==========================================
+        (function() {
+            var currentPath = window.location.pathname.split('/').pop() || 'cold-drinks.html';
+            var links = document.querySelectorAll('.main-nav a');
+            links.forEach(function(link) {
+                var href = link.getAttribute('href');
+                if (href === currentPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>
